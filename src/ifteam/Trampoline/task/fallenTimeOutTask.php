@@ -3,13 +3,14 @@
 namespace ifteam\Trampoline\task;
 
 use ifteam\Trampoline\Trampoline;
-use pocketmine\scheduler\PluginTask;
+use pocketmine\scheduler\Task;
 
-class fallenTimeOutTask extends PluginTask{
+class fallenTimeOutTask extends Task{
     public $name;
+    protected $owner;
 
     public function __construct(Trampoline $owner, $name){
-        parent::__construct($owner);
+        $this->owner = $owner;
         $this->name = $name;
     }
 

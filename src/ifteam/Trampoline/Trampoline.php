@@ -2,7 +2,6 @@
 
 namespace ifteam\Trampoline;
 
-use ifteam\Trampoline\task\fallenTimeOutTask;
 use pocketmine\block\Block;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\Listener;
@@ -169,19 +168,19 @@ class Trampoline extends PluginBase implements Listener{
     }
 
     public function preventFlyKick(PlayerKickEvent $event){
-        if(isset ($this->fallen [$event->getPlayer()->getName()])){
-            if($event->getReason() == "Flying is not enabled on this server") $event->setCancelled();
-        }
+        if($event->getReason() == $this->getServer()->getLanguage()->translateString("kick.reason.cheat", ["%ability.flight"])) $event->setCancelled();
     }
 
     public function fallenQueue(Player $player){
-        if($player == null) return;
-        if(isset ($this->fallen [$player->getName()])){
+        /*
+        if ($player == null) return;
+        if (isset ($this->fallen [$player->getName()])) {
             $this->fallen [$player->getName()]++;
-        }else{
+        } else {
             $this->fallen [$player->getName()] = 1;
         }
-        $this->getServer()->getScheduler()->scheduleDelayedTask(new fallenTimeOutTask ($this, $player->getName()), 100);
+        //$this->getServer()->getScheduler()->scheduleDelayedTask(new fallenTimeOutTask ($this, $player->getName()), 100);
+        */
     }
 
     public function fallenTimeOut($name){
@@ -190,13 +189,8 @@ class Trampoline extends PluginBase implements Listener{
 
     public function fallenDamagePrevent(EntityDamageEvent $event){
         if($event->getCause() == EntityDamageEvent::CAUSE_FALL){
-            if(!$event->getEntity() instanceof Player) return;
-            $event->setCancelled();
-            return;
-            if(isset ($this->fallen [$event->getEntity()->getName()])){
+            if($event->getEntity() instanceof Player){
                 $event->setCancelled();
-                $this->fallen [$event->getEntity()->getName()]--;
-                if($this->fallen [$event->getEntity()->getName()] > 1) unset ($this->fallen [$event->getEntity()->getName()]);
             }
         }
     }

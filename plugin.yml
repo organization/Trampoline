@@ -2,7 +2,4 @@ name: Trampoline
 main: ifteam\Trampoline\Trampoline
 version: 1.7
 author: ifteam
-api:
-- 1.12.0
-- 1.13.0
-- 2.0.0
+api: 3.0.0
