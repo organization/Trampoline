@@ -1,22 +1,26 @@
-<?php
+<?
 
 namespace ifteam\Trampoline\task;
 
 use ifteam\Trampoline\Trampoline;
+use pocketmine\player\Player;
+use pocketmine\plugin\PluginOwned;
 use pocketmine\scheduler\Task;
 
-class fallenTimeOutTask extends Task{
-    public $name;
-    protected $owner;
+class FallenTimeOutTask extends Task implements PluginOwned{
+    protected Trampoline $owner;
+    protected PLayer $player;
 
-    public function __construct(Trampoline $owner, $name){
+    public function __construct(Trampoline $owner, Player $player){
         $this->owner = $owner;
-        $this->name = $name;
+        $this->player = $player;
     }
 
-    public function onRun($currentTick){
-        $this->owner->fallenTimeOut($this->name);
+    public function getOwningPlugin() : Trampoline{
+        return $this->owner;
+    }
+
+    public function onRun() : void{
+        $this->owner->fallenTimeOut($this->player);
     }
 }
-
-?>
